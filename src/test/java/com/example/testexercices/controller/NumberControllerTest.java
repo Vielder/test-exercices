@@ -1,40 +1,42 @@
-package com.example.testexercices.numbers;
+package com.example.testexercices.controller;
 
+import com.example.testexercices.component.NumberObjectStorage;
+import com.example.testexercices.numbers.NumberObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class NumberControllerTest {
+class NumberObjectStorageTest {
     @Autowired
     private WebApplicationContext context;
     @Autowired
     private MockMvc mockMvc;
-
     @Autowired
-    private NumberController numberController;
+    private NumberObjectStorage numberObjectStorage;
 
     @BeforeEach
     void setUp() {
-        numberController.getNumberObjects().clear();
-        numberController.getNumberObjects().add(new NumberObject(11, 22));
-        numberController.getNumberObjects().add(new NumberObject(6, 84));
-        numberController.getNumberObjects().add(new NumberObject(55, 12));
-        numberController.getNumberObjects().add(new NumberObject(48, 13));
-        numberController.getNumberObjects().add(new NumberObject(45, 98));
-        numberController.getNumberObjects().add(new NumberObject(8, 99));
-        numberController.getNumberObjects().add(new NumberObject(48, 34));
-        numberController.getNumberObjects().add(new NumberObject(87, 3));
-        numberController.getNumberObjects().add(new NumberObject(48, 98));
-        numberController.getNumberObjects().add(new NumberObject(87, 12));
+        numberObjectStorage.getAllNumberObjects().clear();
+        numberObjectStorage.saveNumberObject(new NumberObject(11, 22));
+        numberObjectStorage.saveNumberObject(new NumberObject(6, 84));
+        numberObjectStorage.saveNumberObject(new NumberObject(55, 12));
+        numberObjectStorage.saveNumberObject(new NumberObject(48, 13));
+        numberObjectStorage.saveNumberObject(new NumberObject(45, 98));
+        numberObjectStorage.saveNumberObject(new NumberObject(8, 99));
+        numberObjectStorage.saveNumberObject(new NumberObject(48, 34));
+        numberObjectStorage.saveNumberObject(new NumberObject(87, 3));
+        numberObjectStorage.saveNumberObject(new NumberObject(48, 98));
+        numberObjectStorage.saveNumberObject(new NumberObject(87, 12));
 
     }
 

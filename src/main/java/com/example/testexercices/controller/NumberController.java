@@ -1,5 +1,8 @@
-package com.example.testexercices.numbers;
+package com.example.testexercices.controller;
 
+import com.example.testexercices.component.NumberObjectStorage;
+import com.example.testexercices.numbers.NumberObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,15 +15,16 @@ import java.util.Comparator;
 
 @RestController
 public class NumberController {
-    private ArrayList<NumberObject> numberObjects = new ArrayList<>();
-
+    
+    @Autowired
+    private NumberObjectStorage numberObjectStorage;
     @GetMapping("/add")
     public Object numberAddition (@RequestParam("number1") @NonNull Integer number1,
                                   @RequestParam("number2") @NonNull Integer number2){
         if (ValueRange.of(0, 100).isValidIntValue(number1) &&
             ValueRange.of(0, 100).isValidIntValue(number2)) {
             NumberObject numberObject = new NumberObject(number1, number2);
-            numberObjects.add(numberObject);
+            numberObjectStorage.saveNumberObject(numberObject);
             return numberObject;
         }
         return ResponseEntity.badRequest().body(null);
@@ -31,9 +35,9 @@ public class NumberController {
                                 @RequestParam("sortDesc") boolean desc){
         ArrayList<NumberObject> result = new ArrayList<>();
         if (number == null) {
-            result = numberObjects;
+            result = numberObjectStorage.getAllNumberObjects();
         } else if (ValueRange.of(0, 100).isValidIntValue(number)) {
-            for (NumberObject numberObject : numberObjects) {
+            for (NumberObject numberObject : numberObjectStorage.getAllNumberObjects()) {
                 if (numberObject.getNumber1().equals(number) ||
                     numberObject.getNumber2().equals(number) ||
                     numberObject.getSum().equals(number)
@@ -48,11 +52,6 @@ public class NumberController {
         else result.sort(Comparator.comparingInt(NumberObject::getSum));
 
         return result;
-    }
-
-    // getter for tests
-    public ArrayList<NumberObject> getNumberObjects(){
-        return numberObjects;
     }
 
 }
